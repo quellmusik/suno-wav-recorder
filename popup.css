@@ -1,0 +1,300 @@
+/*
+ * Suno WAV Recorder - toolbar popup.
+ * Fixed 320x240 popup. All styling lives here; popup.js only toggles classes,
+ * data attributes and the --peak custom property that drives the meter width.
+ * No remote fonts, no images, no analytics.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --text: #15171c;
+  --muted: #565c66;
+  --line: #d5d8de;
+  --accent: #1f5fd0;
+  --accent-hover: #17479e;
+  --accent-text: #ffffff;
+  --record: #b3251f;
+  --record-text: #a3231b;
+  --danger: #9d241c;
+  --danger-soft: #fbe9e7;
+  --disabled-bg: #e4e6ea;
+  --disabled-text: #4d525b;
+  --meter-track: #dfe2e7;
+  --meter-fill: #1f8f57;
+  --meter-warm: #a86f00;
+  --meter-hot: #c0362f;
+  --focus: #1f5fd0;
+  --radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16181d;
+    --panel: #1d2027;
+    --text: #f1f3f6;
+    --muted: #a9b0ba;
+    --line: #2c313b;
+    --accent: #2f6fe4;
+    --accent-hover: #4a83ee;
+    --accent-text: #ffffff;
+    --record: #d2453e;
+    --record-text: #ff9a92;
+    --danger: #ff9c93;
+    --danger-soft: #2a1a19;
+    --disabled-bg: #262a33;
+    --disabled-text: #a2a8b2;
+    --meter-track: #262b34;
+    --meter-fill: #37b978;
+    --meter-warm: #e0a92a;
+    --meter-hot: #f0655c;
+    --focus: #86acff;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 320px;
+  height: 240px;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 16px 12px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bar,
+.timer-row,
+.meter,
+.readout,
+.actions,
+.error {
+  /* A flex item shrinks by default, and a shrunk clamp box leaks a half line of the text
+     it meant to hide. These blocks keep their own height; only .hint absorbs the slack. */
+  flex: 0 0 auto;
+}
+
+.bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.brand {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.status {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:root[data-phase="recording"] .status {
+  color: var(--record-text);
+  font-weight: 600;
+}
+
+.timer-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.timer {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.meter-db {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.meter {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--meter-track);
+  overflow: hidden;
+}
+
+.meter-fill {
+  width: calc(var(--peak, 0) * 100%);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--meter-fill);
+  /* No transition on width: the meter steps with each 500 ms peak reading, so an
+     animated width would only add layout work. */
+  transition: background-color 160ms linear;
+}
+
+.meter-fill[data-level="warm"] {
+  background: var(--meter-warm);
+}
+
+.meter-fill[data-level="hot"] {
+  background: var(--meter-hot);
+}
+
+.readout {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.readout[data-known="true"] {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  font: inherit;
+  min-width: 0;
+}
+
+.primary {
+  flex: 1 1 auto;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+:root[data-phase="recording"] .primary {
+  background: var(--record);
+}
+
+:root[data-phase="recording"] .primary:hover:not(:disabled) {
+  background: var(--record);
+  filter: brightness(1.08);
+}
+
+.primary:disabled {
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  cursor: not-allowed;
+}
+
+.ghost {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ghost:hover {
+  border-color: var(--muted);
+}
+
+.ghost[hidden] {
+  display: none;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.error {
+  margin: 0;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 12px;
+  line-height: 1.3;
+  /* Tall enough for four rows of a real reason, then scrolls: a clamped box paints a
+     sliver of the next line, and the reason is the one thing the user came to read. The
+     hint line steps aside while an error is showing (popup.js hides it), so this fits. */
+  max-height: 72px;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+}
+
+.error[hidden] {
+  display: none;
+}
+
+.hint[hidden] {
+  display: none;
+}
+
+.hint {
+  margin: auto 0 0;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meter-fill,
+  .primary {
+    transition: none;
+  }
+}

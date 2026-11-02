@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>worklet test</title>
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 2rem; max-width: 60rem; }
+      #result { background: #111; color: #eee; padding: 1rem; white-space: pre-wrap; }
+      .fail { color: #ff6b6b; }
+      .ok { color: #7ee787; }
+    </style>
+  </head>
+  <body>
+    <h1>recorder-worklet.js</h1>
+    <p>
+      An oscillator at 440 Hz is pushed through the real <code>suno-recorder</code> worklet for
+      about a second and a half, exactly the way <code>offscreen.js</code> wires it: the tap
+      into the worklet, a gain of 0 to keep the graph pulling it, chunks transferred back, and
+      <code>WavAccumulator</code> turning them into a WAV. What comes out proves the tap keeps
+      the context's own sample rate, keeps every frame, and keeps the tone intact.
+    </p>
+    <p>Add <code>?upload=1</code> and the encoded WAV is posted to <code>test/out/</code> so the shell can check it.</p>
+    <pre id="result">running&hellip;</pre>
+    <script type="module" src="worklet.test.js"></script>
+  </body>
+</html>

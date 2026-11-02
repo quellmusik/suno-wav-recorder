@@ -1,0 +1,7 @@
+/* Styling for the end-to-end harness page; the page itself carries no styling of its own. */
+body { font: 13px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; background: #0b0b0b; color: #ededed; margin: 0; padding: 20px; }
+h1 { font: 600 16px/1.4 system-ui, sans-serif; margin: 0 0 12px; }
+ol { padding-left: 20px; }
+li.ok, li.ok::marker { color: #74d99f; }
+li.bad, li.bad::marker { color: #ff8b81; }
+pre { white-space: pre-wrap; word-break: break-word; color: #9aa4af; font-size: 11px; }

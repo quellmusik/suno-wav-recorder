@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Suno WAV Recorder</title>
+  </head>
+  <body>
+    <!--
+      Offscreen document. It has no interface of its own and is never shown: background.js
+      opens it because it is the only extension context in Manifest V3 with a DOM, and
+      getUserMedia, AudioContext and AudioWorklet all need one.
+
+      offscreen.js is a module: it imports lib/messages.js and lib/wav-encoder.js, and it
+      loads recorder-worklet.js with audioWorklet.addModule().
+    -->
+    <script type="module" src="offscreen.js"></script>
+  </body>
+</html>

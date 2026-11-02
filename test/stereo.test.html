@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Stereo: does the tap keep both channels, at their own levels?</title>
+    <style>
+      body { font: 14px/1.5 ui-monospace, Consolas, monospace; margin: 2rem; }
+      #result { white-space: pre-wrap; }
+      .ok { color: #1a7f37; }
+      .fail { color: #c62828; }
+    </style>
+  </head>
+  <body>
+    <h1>Stereo through the tap</h1>
+    <p>
+      A stereo source (440 Hz at 0.8 on the left, 990 Hz at 0.4 on the right) is recorded
+      through <code>recorder-worklet.js</code> exactly as <code>offscreen.js</code> wires it,
+      then the finished WAV is checked: two channels, each carrying its own tone at its own
+      level, with nothing leaked from one to the other.
+    </p>
+    <pre id="result">running...</pre>
+    <script type="module" src="stereo.test.js"></script>
+  </body>
+</html>

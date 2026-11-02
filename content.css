@@ -1,0 +1,156 @@
+/*
+ * Suno WAV Recorder - the floating record pill injected into Suno tabs.
+ * Ordered, id-scoped selectors and !important on the properties a host page reset can
+ * break. Dark glass on purpose: it floats over Suno's own player and must read on both
+ * a dark and a light page. No remote fonts, no images, no analytics.
+ */
+
+#suno-wav-pill {
+  position: fixed !important;
+  right: 16px !important;
+  bottom: 88px !important;
+  left: auto !important;
+  top: auto !important;
+  z-index: 2147483000 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #f4f6f8 !important;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+  text-align: left !important;
+  contain: layout style;
+  pointer-events: auto;
+}
+
+#suno-wav-pill[hidden] {
+  display: none !important;
+}
+
+#suno-wav-pill .suno-wav-pill__button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 8px 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 999px !important;
+  background: rgba(17, 18, 22, 0.92) !important;
+  color: #f4f6f8 !important;
+  font: inherit !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35) !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+#suno-wav-pill .suno-wav-pill__button:hover {
+  background: rgba(30, 32, 38, 0.96) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+}
+
+#suno-wav-pill .suno-wav-pill__button:focus-visible {
+  outline: 2px solid #8bb4ff !important;
+  outline-offset: 3px !important;
+}
+
+#suno-wav-pill .suno-wav-pill__button[disabled] {
+  cursor: progress !important;
+  opacity: 0.72;
+}
+
+#suno-wav-pill[data-state="recording"] .suno-wav-pill__button {
+  background: rgba(176, 36, 32, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+}
+
+#suno-wav-pill[data-state="error"] .suno-wav-pill__button {
+  border-color: rgba(240, 167, 43, 0.55) !important;
+}
+
+#suno-wav-pill .suno-wav-pill__dot {
+  display: inline-block !important;
+  width: 8px !important;
+  height: 8px !important;
+  flex: 0 0 auto;
+  border-radius: 50% !important;
+  background: #37b978 !important;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.35);
+}
+
+#suno-wav-pill[data-state="recording"] .suno-wav-pill__dot {
+  background: #ffd7d4 !important;
+  animation: suno-wav-pill-pulse 1.5s ease-out infinite;
+}
+
+#suno-wav-pill[data-state="stopping"] .suno-wav-pill__dot,
+#suno-wav-pill[data-state="starting"] .suno-wav-pill__dot {
+  background: #d8dde5 !important;
+}
+
+#suno-wav-pill[data-state="error"] .suno-wav-pill__dot {
+  background: #f0a72b !important;
+}
+
+#suno-wav-pill .suno-wav-pill__label {
+  white-space: nowrap !important;
+}
+
+#suno-wav-pill .suno-wav-pill__time {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, "SF Mono", monospace !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  font-variant-numeric: tabular-nums;
+  /* No opacity: at 12px it dropped the timer under 4.5:1 on a light page. */
+  white-space: nowrap !important;
+}
+
+#suno-wav-pill .suno-wav-pill__time[hidden] {
+  display: none !important;
+}
+
+/* Announced to screen readers, never drawn. */
+#suno-wav-pill .suno-wav-pill__live {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@keyframes suno-wav-pill-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 212, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(255, 215, 212, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 212, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #suno-wav-pill .suno-wav-pill__button {
+    transition: none;
+  }
+
+  #suno-wav-pill[data-state="recording"] .suno-wav-pill__dot {
+    animation: none;
+  }
+}

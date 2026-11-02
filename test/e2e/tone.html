@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>e2e tone</title>
+<style>
+  body { font: 14px/1.5 system-ui, sans-serif; background: #0b0b0b; color: #f2f2f2; margin: 0; padding: 32px; }
+  h1 { font-size: 18px; margin: 0 0 8px; }
+  code { color: #8fd6ff; }
+</style>
+</head>
+<body>
+<h1>440 Hz test tone</h1>
+<p id="status">starting the audio context…</p>
+<p>This page exists so an automated end-to-end run has a tab that really plays audio.
+The signal is a <code>440 Hz</code> sine at amplitude <code>0.15</code>, which the recorded WAV
+can be checked against: a silent file, or one at the wrong rate, fails the check.</p>
+<script>
+  /**
+   * Kept deliberately dumb: one oscillator straight into the destination, and a report to the
+   * driver every second so it can tell "the tab is playing" from "the tab is open but silent".
+   * The page is served over http:// by test/e2e/drive.ps1, never opened from file://.
+   */
+  const SERVE = new URLSearchParams(location.search).get('serve') || location.origin;
+  const statusEl = document.getElementById('status');
+
+  /** @type {AudioContext} */
+  let ctx;
+  let started = false;
+
+  function report(extra = {}) {
+    const body = JSON.stringify({
+      rate: ctx ? ctx.sampleRate : null,
+      state: ctx ? ctx.state : 'none',
+      currentTime: ctx ? ctx.currentTime : 0,
+      started,
+      at: Date.now(),
+      ...extra,
+    });
+    fetch(`${SERVE}/save/tone-report.json`, { method: 'POST', body }).catch(() => {});
+  }
+
+  function start() {
+    if (started) return;
+    started = true;
+    ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = 440;
+    const gain = ctx.createGain();
+    gain.gain.value = 0.15;
+    osc.connect(gain).connect(ctx.destination);
+    osc.start();
+    void ctx.resume();
+    statusEl.textContent = `${ctx.sampleRate} Hz, state ${ctx.state}`;
+    document.title = `tone ${ctx.sampleRate} Hz ${ctx.state}`;
+    report();
+  }
+
+  start();
+  // Brave may leave a fresh context suspended until it has seen an interaction; the driver
+  // launches with --autoplay-policy=no-user-gesture-required, and this covers the rest.
+  document.addEventListener('click', start);
+  setInterval(() => { if (ctx) report(); }, 1000);
+  window.__tone = { context: () => ctx };
+</script>
+</body>
+</html>

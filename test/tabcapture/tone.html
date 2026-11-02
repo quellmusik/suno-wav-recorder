@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>tone: 440 Hz tab audio</title>
+    <style>
+      body { font: 15px/1.5 ui-sans-serif, system-ui, sans-serif; margin: 0; display: grid; place-items: center; min-height: 100vh; background: #0e0f13; color: #f5f5f7; }
+      main { text-align: center; }
+      h1 { font-size: 1.6rem; margin: 0 0 .5rem; }
+      p { margin: .25rem 0; color: #9aa0aa; }
+      #state { font: 13px/1.4 ui-monospace, Consolas, monospace; color: #6ee7a8; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>440 Hz, 0.8 full scale, stereo</h1>
+      <p>This tab is the stand-in for the Suno tab: it is a real tab playing real audio.</p>
+      <p>Start tab capture on it with the extension and the samples must arrive unchanged.</p>
+      <div id="state">starting...</div>
+    </main>
+    <script type="module" src="tone.js"></script>
+  </body>
+</html>

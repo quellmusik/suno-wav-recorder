@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>modules test</title>
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 2rem; max-width: 60rem; }
+      #result { background: #111; color: #eee; padding: 1rem; white-space: pre-wrap; }
+      .fail { color: #ff6b6b; }
+      .ok { color: #7ee787; }
+    </style>
+  </head>
+  <body>
+    <h1>module graph</h1>
+    <p>
+      Proves <code>offscreen.js</code> parses and that every module it imports resolves.
+      <code>offscreen.js</code> registers a <code>chrome.runtime</code> listener at load, which a
+      plain page does not have, so the expected result here is a <em>ReferenceError about
+      chrome</em>: that means the file got all the way through parsing and importing and only
+      stopped where the extension API begins.
+    </p>
+    <pre id="result">running&hellip;</pre>
+    <script type="module" src="modules.test.js"></script>
+  </body>
+</html>

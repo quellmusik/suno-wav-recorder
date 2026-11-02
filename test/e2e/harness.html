@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Suno WAV e2e harness</title>
+<link rel="stylesheet" href="e2e-harness.css">
+</head>
+<body>
+<h1>Suno WAV recorder — end to end</h1>
+<ol id="steps"></ol>
+<pre id="dump"></pre>
+<!--
+  An extension page's default CSP forbids inline script, so the driver lives in
+  e2e-harness.js and is loaded from here. drive.ps1 copies both files into a throwaway copy
+  of the extension and opens this page at chrome-extension://<id>/e2e-harness.html.
+-->
+<script type="module" src="e2e-harness.js"></script>
+</body>
+</html>

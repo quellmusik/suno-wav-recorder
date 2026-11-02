@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>wav-encoder test</title>
+    <style>
+      body { font: 14px/1.5 system-ui, sans-serif; margin: 2rem; max-width: 60rem; }
+      #result { background: #111; color: #eee; padding: 1rem; white-space: pre-wrap; }
+      .fail { color: #ff6b6b; }
+      .ok { color: #7ee787; }
+    </style>
+  </head>
+  <body>
+    <h1>lib/wav-encoder.js</h1>
+    <p>
+      A synthetic 1-second 440 Hz tone goes through every part of the encoder: the header
+      bytes, the 16-bit and 24-bit interleaving, the round trip back to float, saturation,
+      and the streaming accumulator's chunk boundaries. Everything is synchronous so the
+      whole run finishes before the load event, which is what makes it checkable from
+      <code>brave --headless --dump-dom</code>.
+    </p>
+    <p>Open <code>test/wav-encoder.test.html?emit=1</code> and the page also prints the encoded 16-bit file as
+      base64, so it can be written to disk and played.</p>
+    <audio id="player" controls hidden></audio>
+    <pre id="result">running&hellip;</pre>
+    <pre id="b64" hidden></pre>
+    <script type="module" src="wav-encoder.test.js"></script>
+  </body>
+</html>

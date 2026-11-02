@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Long take: 30 minutes at 48 kHz stereo through the accumulator</title>
+    <style>
+      body { font: 14px/1.5 ui-monospace, Consolas, monospace; margin: 2rem; }
+      #result { white-space: pre-wrap; }
+      .ok { color: #1a7f37; }
+      .fail { color: #c62828; }
+    </style>
+  </head>
+  <body>
+    <h1>30-minute take</h1>
+    <p>
+      Pushes 30 minutes of 48 kHz stereo through <code>WavAccumulator</code> exactly the way
+      the worklet feeds it (8192-frame chunks), then finishes the file and reports the JS
+      heap at its peak, the size of the Blob, and how long it took. It also decodes the
+      1-second synthetic WAV that is already on disk, which is the playability check: the
+      browser's own decoder either accepts that file or does not.
+    </p>
+    <p>Run it with <code>test/run-tests.ps1</code>, or open this page through <code>test/serve.ps1</code>.</p>
+    <pre id="result">running...</pre>
+    <script type="module" src="long-take.test.js"></script>
+  </body>
+</html>

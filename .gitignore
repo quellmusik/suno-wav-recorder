@@ -1,0 +1,18 @@
+# Build output written by package.ps1 / package.sh
+dist/
+
+# Test artifacts: the suite writes WAVs, JSON reports and a harness page here
+test/out/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+
+# If a tool ever adds one
+node_modules/
+*.log
